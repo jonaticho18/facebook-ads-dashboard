@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Ads Dashboard - Miami Event Heroes</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1877f2;
+            --secondary-color: #42a5f5;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 30px;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .kpi-label {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .performance-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-excellent {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .badge-good {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .badge-poor {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .comparison-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+        }
+
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+
+        .progress-bar-custom {
+            height: 8px;
+            border-radius: 10px;
+            background: var(--light-color);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--primary-color));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .recommendation-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .metric-comparison {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .kpi-value {
+                font-size: 2rem;
+            }
+        }
+
+        .loading-animation {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="dashboard-container fade-in">
+            <!-- Header Section -->
+            <div class="header-section">
+                <h1><i class="fab fa-facebook-square"></i> Facebook Ads Dashboard</h1>
+                <h3>Miami Event Heroes - Septiembre 2025</h3>
+                <p>Análisis de Rendimiento Publicitario | 1-8 Septiembre 2025</p>
+            </div>
+
+            <!-- KPIs Section -->
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">$347.35</div>
+                        <div class="kpi-label">Inversión Total</div>
+                        <div class="performance-badge badge-good">Dentro del Presupuesto</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">1,427</div>
+                        <div class="kpi-label">Landing Page Views</div>
+                        <div class="performance-badge badge-excellent">Objetivo Cumplido</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">$0.24</div>
+                        <div class="kpi-label">Costo por Resultado</div>
+                        <div class="performance-badge badge-excellent">Excelente</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">4.45%</div>
+                        <div class="kpi-label">CTR Promedio</div>
+                        <div class="performance-badge badge-good">Sobre Promedio</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <div class="chart-title">Comparación CTR por Anuncio</div>
+                        <canvas id="ctrChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <div class="chart-title">Distribución de Inversión</div>
+                        <canvas id="spendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <div class="chart-title">Costo por Resultado</div>
+                        <canvas id="costChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <div class="chart-title">Resultados por Anuncio</div>
+                        <canvas id="resultsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Table -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="comparison-table">
+                        <h4 class="chart-title" style="padding: 20px 0;">Análisis Detallado por Anuncio</h4>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Anuncio</th>
+                                    <th>Formato</th>
+                                    <th>Inversión</th>
+                                    <th>Resultados</th>
+                                    <th>CTR</th>
+                                    <th>Costo/Resultado</th>
+                                    <th>Performance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Reel 1</strong></td>
+                                    <td><span class="badge bg-primary">Video</span></td>
+                                    <td>$284.08</td>
+                                    <td>1,224</td>
+                                    <td>6.69%</td>
+                                    <td>$0.23</td>
+                                    <td>
+                                        <div class="progress-bar-custom">
+                                            <div class="progress-fill" style="width: 95%"></div>
+                                        </div>
+                                        <small class="text-success">Excelente</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IMG_V1</strong></td>
+                                    <td><span class="badge bg-secondary">Imagen</span></td>
+                                    <td>$55.98</td>
+                                    <td>171</td>
+                                    <td>1.02%</td>
+                                    <td>$0.33</td>
+                                    <td>
+                                        <div class="progress-bar-custom">
+                                            <div class="progress-fill" style="width: 35%"></div>
+                                        </div>
+                                        <small class="text-warning">Mejorable</small>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations Section -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="recommendation-card">
+                        <h4><i class="fas fa-lightbulb"></i> Recomendaciones Estratégicas</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6><i class="fas fa-chart-line"></i> Optimización de Presupuesto</h6>
+                                <p>Reasignar 70% del presupuesto al formato Reel debido a su CTR 6.5x superior</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6><i class="fas fa-video"></i> Contenido Creativo</h6>
+                                <p>Desarrollar más variaciones de video similar al Reel 1 exitoso</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6><i class="fas fa-target"></i> Audiencia</h6>
+                                <p>El audience "Broad" responde mejor al video. Considerar segmentación específica</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart configurations
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        Chart.defaults.color = '#666';
+
+        // CTR Comparison Chart
+        const ctrCtx = document.getElementById('ctrChart').getContext('2d');
+        new Chart(ctrCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Reel 1', 'IMG_V1'],
+                datasets: [{
+                    label: 'CTR (%)',
+                    data: [6.69, 1.02],
+                    backgroundColor: [
+                        'rgba(24, 119, 242, 0.8)',
+                        'rgba(66, 165, 245, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(24, 119, 242, 1)',
+                        'rgba(66, 165, 245, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Spend Distribution Chart
+        const spendCtx = document.getElementById('spendChart').getContext('2d');
+        new Chart(spendCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Reel 1', 'IMG_V1'],
+                datasets: [{
+                    data: [284.08, 55.98],
+                    backgroundColor: [
+                        'rgba(24, 119, 242, 0.8)',
+                        'rgba(66, 165, 245, 0.8)'
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+
+        // Cost per Result Chart
+        const costCtx = document.getElementById('costChart').getContext('2d');
+        new Chart(costCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Reel 1', 'IMG_V1'],
+                datasets: [{
+                    label: 'Costo por Resultado ($)',
+                    data: [0.23, 0.33],
+                    backgroundColor: [
+                        'rgba(76, 175, 80, 0.8)',
+                        'rgba(255, 152, 0, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(76, 175, 80, 1)',
+                        'rgba(255, 152, 0, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Results Chart
+        const resultsCtx = document.getElementById('resultsChart').getContext('2d');
+        new Chart(resultsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Reel 1', 'IMG_V1'],
+                datasets: [{
+                    label: 'Landing Page Views',
+                    data: [1224, 171],
+                    backgroundColor: [
+                        'rgba(156, 39, 176, 0.8)',
+                        'rgba(233, 30, 99, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(156, 39, 176, 1)',
+                        'rgba(233, 30, 99, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Add loading animation on page load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.querySelectorAll('.kpi-card').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.animation = 'fadeIn 0.6s ease-in';
+                    }, index * 200);
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>
