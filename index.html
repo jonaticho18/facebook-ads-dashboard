@@ -1,4 +1,4 @@
-         <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -22,5 +22,599 @@
 
         body {
             background: var(--gradient-1);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+            margin: 20px;
+            padding: 35px;
+        }
+
+        .header-section {
+            background: var(--gradient-2);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, transparent 40%, rgba(24, 119, 242, 0.05) 100%);
+            border-radius: 0 0 0 100px;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .kpi-value {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .kpi-label {
+            color: #666;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-weight: 500;
+        }
+
+        .kpi-trend {
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
+        .trend-up {
+            color: var(--success-color);
+        }
+
+        .trend-down {
+            color: var(--danger-color);
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .performance-badge {
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-excellent {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .badge-good {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .badge-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .comparison-table {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .table th {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table td {
+            padding: 18px;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .progress-bar-custom {
+            height: 10px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-3);
+            border-radius: 15px;
+            transition: width 0.8s ease;
+        }
+
+        .recommendation-card {
+            background: var(--gradient-3);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-top: 25px;
+            box-shadow: 0 15px 40px rgba(79, 172, 254, 0.3);
+        }
+
+        .insights-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+
+        .testing-framework {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #333;
+            padding: 35px;
+            border-radius: 20px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .kpi-value {
+                font-size: 2.2rem;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="dashboard-container fade-in">
+            <!-- Header Section -->
+            <div class="header-section">
+                <h1><i class="fas fa-chart-line"></i> Miami Event Heroes</h1>
+                <h2>Dashboard de Rendimiento - Septiembre 2025</h2>
+                <p><i class="far fa-calendar-alt"></i> Período: 1-10 Septiembre 2025 | <i class="fas fa-target"></i> Enfoque: Optimización de Conversiones Alto Valor</p>
+            </div>
+
+            <!-- Insights Destacados -->
+            <div class="insights-section">
+                <h3><i class="fas fa-lightbulb"></i> Insights Destacados del Período</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>🎯 Rendimiento Superior</h5>
+                        <p>El formato Reel mantiene un CTR 7x superior, ideal para audiencias de alto valor</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>💰 Eficiencia de Costo</h5>
+                        <p>Costo por resultado mejoró 14% vs período anterior ($0.21 vs $0.24)</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>📈 Escalabilidad</h5>
+                        <p>Alcance expandido 17% manteniendo calidad de audiencia</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPIs Section -->
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="kpi-card pulse">
+                        <div class="kpi-value">$371.50</div>
+                        <div class="kpi-label">Inversión Total</div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i> +7% vs período anterior
+                        </div>
+                        <div class="performance-badge badge-excellent">Dentro del Target</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">1,640</div>
+                        <div class="kpi-label">Landing Page Views</div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i> +15% vs anterior
+                        </div>
+                        <div class="performance-badge badge-excellent">Objetivo Superado</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">$0.23</div>
+                        <div class="kpi-label">Costo por Resultado</div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-down"></i> -14% optimización
+                        </div>
+                        <div class="performance-badge badge-excellent">Excelente ROI</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">4.8%</div>
+                        <div class="kpi-label">CTR Promedio</div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i> +8% mejora
+                        </div>
+                        <div class="performance-badge badge-good">Sobre Benchmark</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <div class="chart-title">CTR por Formato Creativo</div>
+                        <canvas id="ctrChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <div class="chart-title">Eficiencia de Inversión</div>
+                        <canvas id="spendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <div class="chart-title">Costo por Conversión</div>
+                        <canvas id="costChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <div class="chart-title">Volumen de Resultados</div>
+                        <canvas id="resultsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Table -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="comparison-table">
+                        <h4 class="chart-title" style="padding: 25px 0;">Análisis Comparativo por Anuncio</h4>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Creative</th>
+                                    <th>Formato</th>
+                                    <th>Inversión</th>
+                                    <th>Conversiones</th>
+                                    <th>CTR</th>
+                                    <th>CPA</th>
+                                    <th>Performance Score</th>
+                                    <th>Recomendación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Reel 1</strong></td>
+                                    <td><span class="badge bg-primary">Video Vertical</span></td>
+                                    <td>$305.00</td>
+                                    <td>1,450</td>
+                                    <td><strong>7.0%</strong></td>
+                                    <td>$0.21</td>
+                                    <td>
+                                        <div class="progress-bar-custom">
+                                            <div class="progress-fill" style="width: 98%"></div>
+                                        </div>
+                                        <small class="text-success">98/100</small>
+                                    </td>
+                                    <td><span class="badge badge-excellent">Escalar +50%</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IMG_V1</strong></td>
+                                    <td><span class="badge bg-secondary">Imagen Estática</span></td>
+                                    <td>$66.50</td>
+                                    <td>190</td>
+                                    <td>1.0%</td>
+                                    <td>$0.35</td>
+                                    <td>
+                                        <div class="progress-bar-custom">
+                                            <div class="progress-fill" style="width: 45%"></div>
+                                        </div>
+                                        <small class="text-warning">45/100</small>
+                                    </td>
+                                    <td><span class="badge badge-warning">Pausar/Rediseñar</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testing Framework -->
+            <div class="testing-framework">
+                <h4><i class="fas fa-flask"></i> Framework de Testing para Próximos Anuncios</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-video"></i> Nuevos Formatos a Testear</h6>
+                        <ul>
+                            <li><strong>Reels con Testimonials:</strong> Aprovecha el alto CTR del video</li>
+                            <li><strong>Stories con CTA directo:</strong> Para audiencias warm</li>
+                            <li><strong>Carousel con casos de éxito:</strong> Para demostrar valor</li>
+                            <li><strong>Video Square con subtítulos:</strong> Para alcance móvil</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-bullseye"></i> Segmentaciones a Probar</h6>
+                        <ul>
+                            <li><strong>Lookalike 1% de conversores:</strong> Calidad premium</li>
+                            <li><strong>Intereses específicos del evento:</strong> Más granular</li>
+                            <li><strong>Retargeting por tiempo en página:</strong> Usuarios engaged</li>
+                            <li><strong>Audiencias similares por valor:</strong> Ticket alto</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations Section -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="recommendation-card">
+                        <h4><i class="fas fa-rocket"></i> Estrategia de Escalamiento - Próximos 7 Días</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6><i class="fas fa-chart-line"></i> Escalamiento Inmediato</h6>
+                                <p><strong>Reel 1:</strong> Aumentar presupuesto diario de $100 a $150</p>
+                                <p><strong>Objetivo:</strong> Mantener CPA bajo $0.25</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6><i class="fas fa-copy"></i> Testing de Variaciones</h6>
+                                <p><strong>Crear 3 nuevos Reels:</strong> Mismo estilo, diferentes hooks</p>
+                                <p><strong>Budget testing:</strong> $50/día por variación</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6><i class="fas fa-users"></i> Expansión de Audiencia</h6>
+                                <p><strong>Lookalike:</strong> Basado en top 25% conversores</p>
+                                <p><strong>Budget inicial:</strong> $75/día para validación</p>
+                            </div>
+                        </div>
+                        <div class="alert alert-light mt-3">
+                            <strong>Meta 15 días:</strong> Alcanzar 3,000 conversiones manteniendo CPA < $0.30
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart configurations con datos actualizados
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        Chart.defaults.color = '#666';
+
+        // CTR Comparison Chart
+        const ctrCtx = document.getElementById('ctrChart').getContext('2d');
+        new Chart(ctrCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Reel 1', 'IMG_V1'],
+                datasets: [{
+                    label: 'CTR (%)',
+                    data: [7.0, 1.0],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.8)',
+                        'rgba(220, 53, 69, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(40, 167, 69, 1)',
+                        'rgba(220, 53, 69, 1)'
+                    ],
+                    borderWidth: 3,
+                    borderRadius: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Spend Distribution Chart
+        const spendCtx = document.getElementById('spendChart').getContext('2d');
+        new Chart(spendCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Reel 1 (Alto ROI)', 'IMG_V1 (Bajo ROI)'],
+                datasets: [{
+                    data: [305.00, 66.50],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.9)',
+                        'rgba(255, 193, 7, 0.9)'
+                    ],
+                    borderWidth: 4,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { 
+                            padding: 25,
+                            usePointStyle: true,
+                            font: { size: 12 }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Cost per Result Chart
+        const costCtx = document.getElementById('costChart').getContext('2d');
+        new Chart(costCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Reel 1', 'IMG_V1'],
+                datasets: [{
+                    label: 'CPA ($)',
+                    data: [0.21, 0.35],
+                    backgroundColor: [
+                        'rgba(23, 162, 184, 0.8)',
+                        'rgba(255, 152, 0, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(23, 162, 184, 1)',
+                        'rgba(255, 152, 0, 1)'
+                    ],
+                    borderWidth: 3,
+                    borderRadius: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Results Chart
+        const resultsCtx = document.getElementById('resultsChart').getContext('2d');
+        new Chart(resultsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Reel 1', 'IMG_V1'],
+                datasets: [{
+                    label: 'Conversiones',
+                    data: [1450, 190],
+                    backgroundColor: [
+                        'rgba(156, 39, 176, 0.8)',
+                        'rgba(233, 30, 99, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(156, 39, 176, 1)',
+                        'rgba(233, 30, 99, 1)'
+                    ],
+                    borderWidth: 3,
+                    borderRadius: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Animations on load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.querySelectorAll('.kpi-card').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.animation = 'fadeIn 0.8s ease-in';
+                    }, index * 150);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+
 
